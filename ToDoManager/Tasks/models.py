@@ -140,3 +140,45 @@ class Subtask(models.Model):
             MinValueValidator(1)
         ]
     )
+
+
+class TaskOccurrence(models.Model):
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    task = models.ForeignKey(
+        Task,
+        on_delete=models.CASCADE,
+    )
+
+    completed = models.BooleanField(
+        _('Completed'),
+        default=False,
+    )
+
+    started_at = models.DateTimeField(
+        _('Started at'),
+        null=True,
+        blank=True,
+    )
+
+    completed_at = models.DateTimeField(
+        _('Completed at'),
+        null=True,
+        blank=True,
+    )
+
+    completed_by = models.ForeignKey(
+        User,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+
+    duration = models.DurationField(
+        _('Duration'),
+        null=True,
+        blank=True,
+    )
