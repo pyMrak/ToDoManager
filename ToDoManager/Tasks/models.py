@@ -12,7 +12,9 @@ class Task(models.Model):
 
     created_by = models.ForeignKey(
         get_user_model(),
-        on_delete=models.CASCADE,
+        related_name='task_created_by',
+        null=True,
+        on_delete=models.SET_NULL,
     )
 
     created_at = models.DateTimeField(
@@ -37,7 +39,8 @@ class Task(models.Model):
     )
 
     responsible = models.ForeignKey(
-        User(),
+        User,
+        related_name='task_responsible',
         on_delete=models.CASCADE,
     )
 
@@ -75,7 +78,9 @@ class Subtask(models.Model):
 
     created_by = models.ForeignKey(
         get_user_model(),
-        on_delete=models.CASCADE,
+        related_name='subtask_created_by',
+        null=True,
+        on_delete=models.SET_NULL,
     )
 
     created_at = models.DateTimeField(
@@ -108,7 +113,7 @@ class Subtask(models.Model):
         _('Subtask Group'),
         default=1,
         validators=[
-            MaxValueValidator(10),
+            MaxValueValidator(100),
             MinValueValidator(1)
         ]
     )
@@ -172,6 +177,7 @@ class TaskOccurrence(models.Model):
 
     completed_by = models.ForeignKey(
         User,
+        related_name='task_occurrence_completed_by',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -214,6 +220,7 @@ class SubtaskOccurrence(models.Model):
 
     completed_by = models.ForeignKey(
         User,
+        related_name='subtask_occurrence_completed_by',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
