@@ -69,3 +69,74 @@ class Task(models.Model):
         null=True,
         blank=True,
     )
+
+
+class Subtask(models.Model):
+
+    created_by = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    active = models.BooleanField(
+        default=True,
+    )
+
+    name = models.CharField(
+        _('Name'),
+        max_length=255,
+    )
+
+    task = models.ForeignKey(
+        Task,
+        on_delete=models.CASCADE,
+    )
+
+    details = models.TextField(
+        _('Details')
+    )
+
+    subtask_group = models.PositiveSmallIntegerField(
+        _('Subtask Group'),
+        default=1,
+        validators=[
+            MaxValueValidator(10),
+            MinValueValidator(1)
+        ]
+    )
+
+    index_in_group = models.PositiveSmallIntegerField(
+        _('Index in Group'),
+    )
+
+    timing_weight = models.PositiveSmallIntegerField(
+        _('Timing Weight'),
+        default=1,
+        validators=[
+            MaxValueValidator(100),
+            MinValueValidator(1)
+        ]
+    )
+
+    average_duration = models.DurationField(
+        _('Average duration'),
+        null=True,
+        blank=True,
+    )
+
+    urgency = models.PositiveSmallIntegerField(
+        _('Urgency'),
+        default=1,
+        validators=[
+            MaxValueValidator(100),
+            MinValueValidator(1)
+        ]
+    )
