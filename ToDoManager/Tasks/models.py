@@ -196,9 +196,16 @@ class SubtaskOccurrence(models.Model):
         auto_now_add=True,
     )
 
+    subtask = models.ForeignKey(
+        TaskOccurrence,
+        related_name='subtask_occurrence_subtask',
+        on_delete=models.CASCADE,
+    )
+
     task_occurrence = models.ForeignKey(
         TaskOccurrence,
-        on_delete=models.CASCADE,
+        null=True,
+        on_delete=models.SET_NULL,
     )
 
     completed = models.BooleanField(
